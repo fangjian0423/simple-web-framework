@@ -1,0 +1,45 @@
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<include file="struts-default.xml"/>
+	
+	<package name="base" extends="struts-default">
+		<!-- 全局拦截器 -->
+		<interceptors>
+			<!-- 文件上传过滤器 -->
+			<interceptor name="adminFileUpload" class="org.apache.struts2.interceptor.FileUploadInterceptor">
+				<param name="maximumSize">5242880</param>
+			</interceptor>
+			<interceptor-stack name="myStack">
+				<interceptor-ref name="adminFileUpload"/>
+				<interceptor-ref name="defaultStack"/>
+			</interceptor-stack>
+		</interceptors>
+
+		<!-- 默认Action-->
+		<default-action-ref name="notFindAction"/>
+		 
+		 
+		<!-- 全局reults -->
+		<global-results>
+			<result name="success">${pageLocation}.jsp</result>
+			<result name="noauth">/no_auth.jsp</result>
+			<result name="error">/system/error.jsp</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="v_message" exception="java.io.FileNotFoundException"/>
+		</global-exception-mappings>
+		<action name="notFindAction">
+			<result>/system/404.html</result>
+		</action>
+	</package>
+	
+	
+	<!-- 公共 -->
+	<package name="test" extends="base" namespace="/test">
+        <global-results>
+            <result name="success">/test/${pageLocation}.jsp</result>
+        </global-results>
+        <action name="test" class="org.format.framework.test.TestAction"/>
+	</package>
+
+</struts>
