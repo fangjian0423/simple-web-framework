@@ -9,4 +9,8 @@ public class TestAction extends ExtendsAction {
         return forward("test");
     }
 
+    public String argument(Integer a, int b, String str) {
+        return forward("test");
+    }
+
 }

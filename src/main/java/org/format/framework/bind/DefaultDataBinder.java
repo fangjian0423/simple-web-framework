@@ -1,11 +1,4 @@
 package org.format.framework.bind;
 
-/**
- * Created with IntelliJ IDEA.
- * User: fangjian
- * Date: 14-7-8
- * Time: 上午12:27
- * To change this template use File | Settings | File Templates.
- */
-public class DefaultDataBinder {
+public class DefaultDataBinder implements DataBinder {
 }
