@@ -2,14 +2,20 @@ package org.format.framework.propertyeditor;
 
 import org.format.framework.propertyeditor.editors.CustomBooleanEditor;
 import org.format.framework.propertyeditor.editors.CustomNumberEditor;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.beans.PropertyEditor;
+import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
 public class PropertyEditorRegistry {
+
+    private String[] configFiles;
 
     private Map<Class<?>, PropertyEditor> defaultEditors;
 
@@ -26,15 +32,25 @@ public class PropertyEditorRegistry {
         /**
          * 这里初始化的自定义属性编辑器都是需要有没有参数的构造函数的，否则请使用@Binder注解
          */
-        initFormConfigFile();
-        initFromAnnotation();
+        try {
+            initFormConfigFile();
+            initFromAnnotation();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * 配置文件初始化自定义属性编辑器
      */
-    private void initFormConfigFile() {
-
+    private void initFormConfigFile() throws Exception {
+        if(this.configFiles != null && this.configFiles.length > 0) {
+            for(String configFile : configFiles) {
+                File file = new File(configFile);
+                Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(configFile);
+                Element doc = document.getDocumentElement();
+            }
+        }
     }
 
     /**
