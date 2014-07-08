@@ -19,12 +19,13 @@ public class FrameworkAction extends ExtendsAction {
 
     private DataBinder dataBinder = new DefaultDataBinder();
 
-    private ArgumentResolverComposite argumentResolvers;
+    private ArgumentResolverComposite argumentResolvers = new ArgumentResolverComposite();
 
     @Override
     protected void init() {
-        argumentResolvers = new ArgumentResolverComposite();
-        argumentResolvers.addResolver(new SimpleArgumentResolver());
+        synchronized (argumentResolvers) {
+            argumentResolvers.addResolver(new SimpleArgumentResolver());
+        }
     }
 
     @Override

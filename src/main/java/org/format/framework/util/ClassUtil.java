@@ -12,7 +12,9 @@ public class ClassUtil {
                 Number.class.isAssignableFrom(clazz) ||
                 Date.class.isAssignableFrom(clazz) ||
                 clazz.equals(URI.class) || clazz.equals(URL.class) ||
-                clazz.equals(Locale.class) || clazz.equals(Class.class);
+                clazz.equals(Locale.class) || clazz.equals(Class.class) ||
+                clazz.equals(int.class) || clazz.equals(long.class) ||
+                clazz.equals(double.class) || clazz.equals(float.class);
     }
 
 }

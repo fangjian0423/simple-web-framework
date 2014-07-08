@@ -16,7 +16,7 @@ public class SimpleArgumentResolver implements ArgumentResolver {
         Object arg = resolveName(parameter, paramName, request);
 
         if(dataBinder != null) {
-            dataBinder.convertIfNecessary(arg, parameter.getType(), parameter);
+            arg = dataBinder.convertIfNecessary(arg, parameter.getType(), parameter);
         }
 
         return arg;

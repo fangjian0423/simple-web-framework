@@ -6,7 +6,13 @@
 <body>
     test.jsp
     <div>
-        ${name}
+        name: ${name}
+    </div>
+    <div>
+        a: ${a}
+    </div>
+    <div>
+        b: ${b}
     </div>
 </body>
 </html>

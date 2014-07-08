@@ -9,7 +9,9 @@ public class TestAction extends FrameworkAction {
         return forward("test");
     }
 
-    public String argument(Integer a, int b, String str) {
+    public String argument(Integer a, int b) {
+        req.setAttribute("a", a);
+        req.setAttribute("b", b);
         return forward("test");
     }
 
