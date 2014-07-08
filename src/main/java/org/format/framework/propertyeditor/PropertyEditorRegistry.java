@@ -23,6 +23,25 @@ public class PropertyEditorRegistry {
     }
 
     private void initCustomPropertyEditors() {
+        /**
+         * 这里初始化的自定义属性编辑器都是需要有没有参数的构造函数的，否则请使用@Binder注解
+         */
+        initFormConfigFile();
+        initFromAnnotation();
+    }
+
+    /**
+     * 配置文件初始化自定义属性编辑器
+     */
+    private void initFormConfigFile() {
+
+    }
+
+    /**
+     * 注解初始化自定义属性编辑器
+     */
+    private void initFromAnnotation() {
+        
     }
 
     private void registerDefaultPropertyEditors() {

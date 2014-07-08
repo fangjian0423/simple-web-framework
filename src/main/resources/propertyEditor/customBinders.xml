@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<binders>
+    <binder>
+        <class>java.util.Date</class>
+        <editor></editor>
+    </binder>
+</binders>
