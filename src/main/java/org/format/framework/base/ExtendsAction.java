@@ -1,10 +1,16 @@
 package org.format.framework.base;
 
 import com.opensymphony.xwork2.ActionSupport;
+import javassist.*;
+import javassist.bytecode.CodeAttribute;
+import javassist.bytecode.LocalVariableAttribute;
+import javassist.bytecode.MethodInfo;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
+import org.format.framework.test.TestAction;
+import org.format.framework.util.ClassUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +20,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ExtendsAction extends ActionSupport {
+/**
+ * 抽象类，继承自ActionSupport
+ */
+public abstract class ExtendsAction extends ActionSupport {
 
     private static Log log = LogFactory.getLog(ExtendsAction.class);
 
@@ -27,6 +36,9 @@ public class ExtendsAction extends ActionSupport {
 
     @Override
     public String execute() throws Exception {
+
+        init();
+
         req = getRequest();
         resp = getResponse();
 
@@ -42,8 +54,6 @@ public class ExtendsAction extends ActionSupport {
         }
 
         try {
-
-            //TODO 目前不支持参数，之后会加入参数处理，跟SpringMVC一样
             String forward = invokeMethod(methodName);
             if(log.isDebugEnabled()) {
                 log.debug("methodName: " + methodName+", forward: " + forward);
@@ -57,17 +67,16 @@ public class ExtendsAction extends ActionSupport {
 
     }
 
+    protected abstract void init();
+
+    /**
+     * 根据方法名找到对应的方法并invoke
+     * @param methodName
+     * @return
+     */
     private String invokeMethod(String methodName) {
-        List<Method> methods = getMethods();
 
-        Method doMethod = null;
-
-        for(Method method : methods) {
-            if(method.getName().equals(methodName)) {
-                doMethod = method;
-                break;
-            }
-        }
+        Method doMethod = getInvokeMethod(methodName);
 
         if(doMethod == null) {
             throw new RuntimeException("can not find a method: " + methodName);
@@ -75,8 +84,10 @@ public class ExtendsAction extends ActionSupport {
 
         Object ret = null;
 
+        Object[] args = resolveParameters(doMethod);
+
         try {
-            ret = doMethod.invoke(this);
+            ret = doMethod.invoke(this, args);
             //FIXME 异常可以做点文章
         } catch (IllegalAccessException e) {
             e.printStackTrace();
@@ -94,12 +105,48 @@ public class ExtendsAction extends ActionSupport {
         }
     }
 
+    /**
+     * 解析参数(使用javassist解析)
+     * @param doMethod
+     * @return 各个参数的值
+     */
+    protected abstract Object[] resolveParameters(Method doMethod);
+
+    /**
+     * 找到要调用的方法
+     * @param methodName
+     * @return
+     */
+    private Method getInvokeMethod(String methodName) {
+        List<Method> methods = getMethods();
+
+        Method doMethod = null;
+
+        for(Method method : methods) {
+            if(method.getName().equals(methodName)) {
+                doMethod = method;
+                break;
+            }
+        }
+
+        return doMethod;
+    }
+
+    /**
+     * 找出所有的方法
+     * @return
+     */
     private List<Method> getMethods() {
         List<Method> methods = new ArrayList<Method>();
         recursion(this.getClass(), methods);
         return methods;
     }
 
+    /**
+     * 递归找出所有的方法
+     * @param clazz
+     * @param methods
+     */
     private void recursion(Class clazz, List<Method> methods) {
         methods.addAll(Arrays.asList(clazz.getDeclaredMethods()));
         if(clazz.getSuperclass() != null) {
@@ -137,4 +184,5 @@ public class ExtendsAction extends ActionSupport {
     public void setPageLocation(String pageLocation) {
         this.pageLocation = pageLocation;
     }
+
 }

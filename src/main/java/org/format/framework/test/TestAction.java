@@ -1,8 +1,8 @@
 package org.format.framework.test;
 
-import org.format.framework.base.ExtendsAction;
+import org.format.framework.base.FrameworkAction;
 
-public class TestAction extends ExtendsAction {
+public class TestAction extends FrameworkAction {
 
     public String test() {
         req.setAttribute("name", "format");
