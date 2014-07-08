@@ -86,6 +86,8 @@ public class FrameworkAction extends ExtendsAction {
                     paramType = char.class;
                 } else if(types[i].getName().equals("byte")) {
                     paramType = byte.class;
+                } else if(types[i].getName().equals("boolean")) {
+                    paramType = boolean.class;
                 } else {
                     paramType = Class.forName(types[i].getName());
                 }

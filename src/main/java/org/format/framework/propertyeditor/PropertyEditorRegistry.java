@@ -1,5 +1,6 @@
 package org.format.framework.propertyeditor;
 
+import org.format.framework.propertyeditor.editors.CustomBooleanEditor;
 import org.format.framework.propertyeditor.editors.CustomNumberEditor;
 
 import java.beans.PropertyEditor;
@@ -26,6 +27,12 @@ public class PropertyEditorRegistry {
 
     private void registerDefaultPropertyEditors() {
         this.defaultEditors = new HashMap<Class<?>, PropertyEditor>(64);
+
+        //boolean editor
+        this.defaultEditors.put(boolean.class, new CustomBooleanEditor(false));
+        this.defaultEditors.put(Boolean.class, new CustomBooleanEditor(true));
+
+        //number editor
         this.defaultEditors.put(byte.class, new CustomNumberEditor(Byte.class, false));
         this.defaultEditors.put(Byte.class, new CustomNumberEditor(Byte.class, true));
         this.defaultEditors.put(short.class, new CustomNumberEditor(Short.class, false));

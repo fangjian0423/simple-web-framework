@@ -9,7 +9,7 @@ public class TestAction extends FrameworkAction {
         return forward("test");
     }
 
-    public String argument(Integer a, int b) {
+    public String argument(Integer a, int b, boolean bool, Boolean Bool) {
         req.setAttribute("a", a);
         req.setAttribute("b", b);
         return forward("test");
