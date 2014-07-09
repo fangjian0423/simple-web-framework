@@ -4,4 +4,5 @@
         <class>org.format.framework.test.Dept</class>
         <editor>org.format.framework.propertyeditor.editors.DeptPropertyEditor</editor>
     </binder>
+    <binder class="org.format.framework.propertyeditor.binder.GlobalCustomBinder"/>
 </binders>

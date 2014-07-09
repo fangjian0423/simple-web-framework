@@ -1,5 +1,6 @@
 package org.format.framework.propertyeditor;
 
+import org.format.framework.bind.DataBinder;
 import org.format.framework.propertyeditor.editors.CustomBooleanEditor;
 import org.format.framework.propertyeditor.editors.CustomNumberEditor;
 import org.format.framework.util.ClassUtil;
@@ -53,9 +54,19 @@ public class PropertyEditorRegistry {
                 Element doc = XmlUtil.buildDoc(configFile);
                 List<Element> nodes = XmlUtil.getChildElementsByTagName(doc, "binder");
                 for(Element node : nodes) {
-                    Element classNode = XmlUtil.getChildElementByTagName(node, "class");
-                    Element editorNode = XmlUtil.getChildElementByTagName(node ,"editor");
-                    this.customEditors.put(Class.forName(classNode.getTextContent()), (PropertyEditor)ClassUtil.newInstance(Class.forName(editorNode.getTextContent())));
+                    if(node.hasAttribute("class")) {
+                        String clazz = node.getAttribute("class");
+                        Class binderCls = Class.forName(clazz);
+                        if(CustomBinder.class.isAssignableFrom(binderCls)) {
+                            Object obj = binderCls.newInstance();
+                            binderCls.getDeclaredMethod("addCustomPropertyEditor", DataBinder.class).invoke(obj, this);
+                            int a = 1;
+                        }
+                    } else {
+                        Element classNode = XmlUtil.getChildElementByTagName(node, "class");
+                        Element editorNode = XmlUtil.getChildElementByTagName(node ,"editor");
+                        this.customEditors.put(Class.forName(classNode.getTextContent()), (PropertyEditor)ClassUtil.newInstance(Class.forName(editorNode.getTextContent())));
+                    }
                 }
             }
         }
@@ -100,6 +111,8 @@ public class PropertyEditorRegistry {
         return pe;
     }
 
-
+    public void addCustomPropertyEditor(Class clazz, PropertyEditor propertyEditor) {
+        this.customEditors.put(clazz, propertyEditor);
+    }
 
 }
