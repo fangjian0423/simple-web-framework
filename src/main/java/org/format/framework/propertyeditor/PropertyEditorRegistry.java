@@ -5,12 +5,9 @@ import org.format.framework.propertyeditor.editors.CustomBooleanEditor;
 import org.format.framework.propertyeditor.editors.CustomNumberEditor;
 import org.format.framework.util.ClassUtil;
 import org.format.framework.util.XmlUtil;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.beans.PropertyEditor;
-import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
@@ -39,7 +36,6 @@ public class PropertyEditorRegistry {
         this.customEditors = new HashMap<Class<?>, PropertyEditor>(64);
         try {
             initFormConfigFile();
-            initFromAnnotation();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -70,13 +66,6 @@ public class PropertyEditorRegistry {
                 }
             }
         }
-    }
-
-    /**
-     * 注解初始化自定义属性编辑器
-     */
-    private void initFromAnnotation() {
-        
     }
 
     private void registerDefaultPropertyEditors() {
