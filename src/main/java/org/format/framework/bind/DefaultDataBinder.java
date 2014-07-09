@@ -12,7 +12,7 @@ public class DefaultDataBinder extends PropertyEditorRegistry implements DataBin
 
     @Override
     public <T> T convertIfNecessary(Object value, Class<T> requiredType, MethodParameter methodParam) {
-        PropertyEditor pe = getDefaultPropertyEditor(requiredType);
+        PropertyEditor pe = getPropertyEditor(requiredType);
         try {
             if(pe == null) {
                 //以String类型的构造函数进行实例化
@@ -38,7 +38,7 @@ public class DefaultDataBinder extends PropertyEditorRegistry implements DataBin
                         Object convertval = null;
                         String[] values = (String[])parameter.getValue();
                         if(values.length == 1) {
-                            PropertyEditor pe = getDefaultPropertyEditor(parameter.getType());
+                            PropertyEditor pe = getPropertyEditor(parameter.getType());
                             if(pe == null) {
                                 //以String类型的构造函数进行实例化
                                 convertval = ClassUtil.instantiateClass(parameter.getType().getConstructor(String.class), values[0].toString());

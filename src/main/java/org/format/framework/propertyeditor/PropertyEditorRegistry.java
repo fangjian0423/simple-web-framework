@@ -92,7 +92,7 @@ public class PropertyEditorRegistry {
         this.defaultEditors.put(BigInteger.class, new CustomNumberEditor(BigInteger.class, true));
     }
 
-    public PropertyEditor getDefaultPropertyEditor(Class clazz) {
+    public PropertyEditor getPropertyEditor(Class clazz) {
         PropertyEditor pe = this.defaultEditors.get(clazz);
         if(pe == null) {
             pe = this.customEditors.get(clazz);
