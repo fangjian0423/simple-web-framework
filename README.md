@@ -20,6 +20,6 @@ then param **a** will be 1 and param **b** will be 2.
 
 the Employee is a custom Class with name and age properties. Framework also can resolve Object param.
 
-**@Obj** annotation has a property "value", it means the prefix of param, like e.name, e.age. If @Obj do not has a "value" property, it is auto filled like: **Employee -> employee, Dept -> dept**
+**@Obj** annotation has a property "value", it means the prefix of object param, like e.name, e.age means the name, age of object's property. If @Obj do not has a "value" property, it is auto filled like: **Employee -> employee, Dept -> dept**
 
 **the "act" param means the method name of Action.**
