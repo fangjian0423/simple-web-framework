@@ -5,11 +5,14 @@ import javassist.bytecode.CodeAttribute;
 import javassist.bytecode.LocalVariableAttribute;
 import javassist.bytecode.MethodInfo;
 import org.format.framework.argumentResolver.ArgumentResolverComposite;
+import org.format.framework.argumentResolver.ObjectArgumentResolver;
 import org.format.framework.argumentResolver.SimpleArgumentResolver;
 import org.format.framework.bind.DataBinder;
 import org.format.framework.bind.DefaultDataBinder;
 import org.format.framework.code.MethodParameter;
+import org.format.framework.util.ClassUtil;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 /**
@@ -25,6 +28,7 @@ public class FrameworkAction extends ExtendsAction {
     protected void init() {
         synchronized (argumentResolvers) {
             argumentResolvers.addResolver(new SimpleArgumentResolver());
+            argumentResolvers.addResolver(new ObjectArgumentResolver());
         }
     }
 
@@ -52,51 +56,7 @@ public class FrameworkAction extends ExtendsAction {
      */
     private MethodParameter[] getParameters(Method doMethod) {
         try {
-            ClassPool pool = ClassPool.getDefault();
-            pool.insertClassPath(new ClassClassPath(FrameworkAction.class));
-            CtClass cc = pool.get(this.getClass().getName());
-            CtMethod method = cc.getDeclaredMethod(doMethod.getName());
-
-            MethodInfo methodInfo = method.getMethodInfo();
-            CodeAttribute codeAttr = methodInfo.getCodeAttribute();
-
-            LocalVariableAttribute attr = (LocalVariableAttribute) codeAttr.getAttribute(LocalVariableAttribute.tag);
-
-            MethodParameter[] params = new MethodParameter[method.getParameterTypes().length];
-
-            int pos = Modifier.isStatic(method.getModifiers()) ? 0 : 1;
-
-            CtClass[] types = method.getParameterTypes();
-
-            for (int i = 0; i < params.length; i++) {
-
-                Class paramType = null;
-
-                if(types[i].getName().equals("int")) {
-                    paramType = int.class;
-                } else if(types[i].getName().equals("short")) {
-                    paramType = short.class;
-                } else if(types[i].getName().equals("long")) {
-                    paramType = long.class;
-                } else if(types[i].getName().equals("float")) {
-                    paramType = float.class;
-                } else if(types[i].getName().equals("double")) {
-                    paramType = double.class;
-                } else if(types[i].getName().equals("char")) {
-                    paramType = char.class;
-                } else if(types[i].getName().equals("byte")) {
-                    paramType = byte.class;
-                } else if(types[i].getName().equals("boolean")) {
-                    paramType = boolean.class;
-                } else {
-                    paramType = Class.forName(types[i].getName());
-                }
-
-                params[i] = new MethodParameter(attr.variableName(i + pos),
-                                                paramType,
-                                                i);
-            }
-            return params;
+            return ClassUtil.getParametersByMethod(this.getClass(), doMethod);
         } catch (Exception e) {
             e.printStackTrace();
         }
