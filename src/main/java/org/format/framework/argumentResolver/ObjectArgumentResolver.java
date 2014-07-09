@@ -1,5 +1,6 @@
 package org.format.framework.argumentResolver;
 
+import org.apache.commons.lang.StringUtils;
 import org.format.framework.annotation.Obj;
 import org.format.framework.bind.DataBinder;
 import org.format.framework.code.MethodParameter;
@@ -24,6 +25,10 @@ public class ObjectArgumentResolver implements ArgumentResolver {
         Obj annotation = (Obj)parameter.getAnnotation(Obj.class);
 
         String alias = annotation.value();
+
+        if(StringUtils.isBlank(alias)) {
+            alias = parameter.getType().getSimpleName().substring(0,1).toLowerCase()+parameter.getType().getSimpleName().substring(1);
+        }
 
         bindParameters(obj, parameter, properties(alias, request), dataBinder);
 
