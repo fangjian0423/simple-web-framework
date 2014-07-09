@@ -1,5 +1,7 @@
 package org.format.framework.code;
 
+import java.lang.annotation.Annotation;
+
 /**
  * 封装了方法参数的类
  */
@@ -10,6 +12,10 @@ public class MethodParameter {
     private int index;
 
     private Class type;
+
+    private Annotation[] annotations;
+
+    private Object value;
 
     public MethodParameter() {
     }
@@ -42,6 +48,44 @@ public class MethodParameter {
 
     public void setType(Class type) {
         this.type = type;
+    }
+
+    public Annotation[] getAnnotations() {
+        return annotations;
+    }
+
+    public void setAnnotations(Annotation[] annotations) {
+        this.annotations = annotations;
+    }
+
+    public Object getValue() {
+        return value;
+    }
+
+    public void setValue(Object value) {
+        this.value = value;
+    }
+
+    public boolean hasAnnotation(Class clazz) {
+        if(this.annotations != null && this.annotations.length > 0) {
+            for(Annotation annotation : annotations) {
+                if(annotation.annotationType().equals(clazz)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public Annotation getAnnotation(Class clazz) {
+        if(this.annotations != null && this.annotations.length > 0) {
+            for(Annotation annotation : annotations) {
+                if(annotation.annotationType().equals(clazz)) {
+                    return annotation;
+                }
+            }
+        }
+        return null;
     }
 
 }

@@ -57,6 +57,16 @@ public class ClassUtil {
         return null;
     }
 
+    public static Method getSetMethods(Class clazz, String property) {
+        Method[] methods = clazz.getDeclaredMethods();
+        for(Method method : methods) {
+            if(method.getName().equals("set"+property.substring(0,1).toUpperCase()+property.substring(1))) {
+                return method;
+            }
+        }
+        return null;
+    }
+
     public static MethodParameter[] getParametersByMethod(Class clazz, Method doMethod) throws Exception {
         //所有参数的注解
         Annotation[][] paramAnnos = doMethod.getParameterAnnotations();
