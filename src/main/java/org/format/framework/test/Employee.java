@@ -13,6 +13,8 @@ public class Employee {
 
     private Date birth;
 
+    private Dept dept;
+
     public Integer getId() {
         return id;
     }
@@ -45,6 +47,14 @@ public class Employee {
         this.birth = birth;
     }
 
+    public Dept getDept() {
+        return dept;
+    }
+
+    public void setDept(Dept dept) {
+        this.dept = dept;
+    }
+
     @Override
     public String toString() {
         return "Employee{" +
@@ -52,6 +62,7 @@ public class Employee {
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 ", birth=" + birth +
+                ", dept=" + dept +
                 '}';
     }
 }

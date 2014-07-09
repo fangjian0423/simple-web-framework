@@ -2,6 +2,8 @@ package org.format.framework.propertyeditor;
 
 import org.format.framework.propertyeditor.editors.CustomBooleanEditor;
 import org.format.framework.propertyeditor.editors.CustomNumberEditor;
+import org.format.framework.util.ClassUtil;
+import org.format.framework.util.XmlUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -10,8 +12,7 @@ import java.beans.PropertyEditor;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class PropertyEditorRegistry {
 
@@ -24,6 +25,8 @@ public class PropertyEditorRegistry {
     private Map<Class<?>, PropertyEditor> customEditorCache;
 
     public PropertyEditorRegistry() {
+        this.configFiles = new String[1];
+        configFiles[0] = "propertyEditor/customBinders.xml";
         registerDefaultPropertyEditors();
         initCustomPropertyEditors();
     }
@@ -32,6 +35,7 @@ public class PropertyEditorRegistry {
         /**
          * 这里初始化的自定义属性编辑器都是需要有没有参数的构造函数的，否则请使用@Binder注解
          */
+        this.customEditors = new HashMap<Class<?>, PropertyEditor>(64);
         try {
             initFormConfigFile();
             initFromAnnotation();
@@ -46,9 +50,13 @@ public class PropertyEditorRegistry {
     private void initFormConfigFile() throws Exception {
         if(this.configFiles != null && this.configFiles.length > 0) {
             for(String configFile : configFiles) {
-                File file = new File(configFile);
-                Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(configFile);
-                Element doc = document.getDocumentElement();
+                Element doc = XmlUtil.buildDoc(configFile);
+                List<Element> nodes = XmlUtil.getChildElementsByTagName(doc, "binder");
+                for(Element node : nodes) {
+                    Element classNode = XmlUtil.getChildElementByTagName(node, "class");
+                    Element editorNode = XmlUtil.getChildElementByTagName(node ,"editor");
+                    this.customEditors.put(Class.forName(classNode.getTextContent()), (PropertyEditor)ClassUtil.newInstance(Class.forName(editorNode.getTextContent())));
+                }
             }
         }
     }
@@ -85,7 +93,11 @@ public class PropertyEditorRegistry {
     }
 
     public PropertyEditor getDefaultPropertyEditor(Class clazz) {
-        return this.defaultEditors.get(clazz);
+        PropertyEditor pe = this.defaultEditors.get(clazz);
+        if(pe == null) {
+            pe = this.customEditors.get(clazz);
+        }
+        return pe;
     }
 
 

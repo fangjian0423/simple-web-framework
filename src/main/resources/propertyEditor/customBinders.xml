@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <binders>
     <binder>
-        <class>java.util.Date</class>
-        <editor></editor>
+        <class>org.format.framework.test.Dept</class>
+        <editor>org.format.framework.propertyeditor.editors.DeptPropertyEditor</editor>
     </binder>
 </binders>
