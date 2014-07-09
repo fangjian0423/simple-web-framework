@@ -1,25 +1,18 @@
 package org.format.framework.bind;
 
-import com.sun.tools.corba.se.idl.PragmaEntry;
 import org.format.framework.code.MethodParameter;
 import org.format.framework.propertyeditor.PropertyEditorRegistry;
 import org.format.framework.util.ClassUtil;
 
 import java.beans.PropertyEditor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-public class DefaultDataBinder implements DataBinder {
-
-    private PropertyEditorRegistry per = new PropertyEditorRegistry();
+public class DefaultDataBinder extends PropertyEditorRegistry implements DataBinder {
 
     @Override
     public <T> T convertIfNecessary(Object value, Class<T> requiredType, MethodParameter methodParam) {
-        PropertyEditor pe = per.getDefaultPropertyEditor(requiredType);
+        PropertyEditor pe = getDefaultPropertyEditor(requiredType);
         try {
             if(pe == null) {
                 //以String类型的构造函数进行实例化
@@ -45,7 +38,7 @@ public class DefaultDataBinder implements DataBinder {
                         Object convertval = null;
                         String[] values = (String[])parameter.getValue();
                         if(values.length == 1) {
-                            PropertyEditor pe = per.getDefaultPropertyEditor(parameter.getType());
+                            PropertyEditor pe = getDefaultPropertyEditor(parameter.getType());
                             if(pe == null) {
                                 //以String类型的构造函数进行实例化
                                 convertval = ClassUtil.instantiateClass(parameter.getType().getConstructor(String.class), values[0].toString());
