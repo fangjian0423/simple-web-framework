@@ -87,7 +87,7 @@ public abstract class ExtendsAction extends ActionSupport {
         Object[] args = resolveParameters(doMethod);
 
         try {
-            ret = doMethod.invoke(this, args);
+            ret = doMethod.invoke(this, (Object[])args);
             //FIXME 异常可以做点文章
         } catch (IllegalAccessException e) {
             e.printStackTrace();

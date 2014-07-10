@@ -12,17 +12,30 @@ public class DefaultDataBinder extends PropertyEditorRegistry implements DataBin
 
     @Override
     public <T> T convertIfNecessary(Object value, Class<T> requiredType, MethodParameter methodParam) {
-        PropertyEditor pe = getPropertyEditor(requiredType);
         try {
+            if(value == null) {
+                //基本类型仅仅支持int和boolean
+                if(requiredType.isPrimitive()) {
+                    if(requiredType == Integer.TYPE) {
+                        return (T) new Integer(0);
+                    } else if(requiredType == Boolean.TYPE) {
+                        return (T) new Boolean(false);
+                    }
+                }
+                return null;
+            }
+            PropertyEditor pe = getPropertyEditor(requiredType);
             if(pe == null) {
                 //以String类型的构造函数进行实例化
                 return ClassUtil.instantiateClass(requiredType.getConstructor(String.class), value.toString());
             }
-        } catch (NoSuchMethodException e) {
+
+            pe.setAsText(value.toString());
+            return (T) pe.getValue();
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        pe.setAsText(value.toString());
-        return (T) pe.getValue();
+        return null;
     }
 
     @Override
