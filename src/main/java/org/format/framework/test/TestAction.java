@@ -1,8 +1,10 @@
 package org.format.framework.test;
 
+import org.format.framework.annotation.Action;
 import org.format.framework.annotation.Obj;
 import org.format.framework.base.FrameworkAction;
 
+@Action("test")
 public class TestAction extends FrameworkAction {
 
     public String test() {

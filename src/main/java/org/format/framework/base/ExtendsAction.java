@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
+import org.format.framework.annotation.Action;
 import org.format.framework.test.TestAction;
 import org.format.framework.util.ClassUtil;
 
@@ -174,7 +175,26 @@ public abstract class ExtendsAction extends ActionSupport {
 
 
     protected String forward(String location) {
-        setPageLocation(location);
+        Action anno = this.getClass().getAnnotation(Action.class);
+        String prefix = null;
+        String newLocation = null;
+        if(anno != null) {
+            prefix = anno.value().startsWith("/") ? anno.value() : ("/" + anno.value());
+            if(prefix.endsWith("/")) {
+                if(location.startsWith("/")) {
+                    newLocation = prefix.substring(0, prefix.length() - 1) + location;
+                } else {
+                    newLocation = prefix + location;
+                }
+            } else {
+                if(location.startsWith("/")) {
+                    newLocation = prefix + location;
+                } else {
+                    newLocation = prefix + "/" + location;
+                }
+            }
+        }
+        setPageLocation(newLocation);
         return SUCCESS;
     }
 
