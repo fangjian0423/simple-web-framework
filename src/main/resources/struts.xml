@@ -21,9 +21,9 @@
 		 
 		<!-- 全局reults -->
 		<global-results>
-			<result name="success">${pageLocation}.jsp</result>
-			<result name="noauth">/no_auth.jsp</result>
-			<result name="error">/system/error.jsp</result>
+			<result name="success" type="freemarker">${pageLocation}</result>
+			<result name="noauth" type="freemarker">/system/no_auth.ftl</result>
+			<result name="error" type="freemarker">/system/error.ftl</result>
 		</global-results>
 		<global-exception-mappings>
 			<exception-mapping result="v_message" exception="java.io.FileNotFoundException"/>
@@ -36,9 +36,6 @@
 	
 	<!-- 公共 -->
 	<package name="test" extends="base" namespace="/test">
-        <global-results>
-            <result name="success" type="freemarker">${pageLocation}</result>
-        </global-results>
         <action name="test" class="org.format.framework.test.TestAction"/>
 	</package>
 
