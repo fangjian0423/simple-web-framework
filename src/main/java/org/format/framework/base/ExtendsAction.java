@@ -12,6 +12,7 @@ import org.apache.struts2.ServletActionContext;
 import org.format.framework.annotation.Action;
 import org.format.framework.test.TestAction;
 import org.format.framework.util.ClassUtil;
+import org.format.framework.util.Config;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -194,7 +195,7 @@ public abstract class ExtendsAction extends ActionSupport {
                 }
             }
         }
-        setPageLocation(newLocation);
+        setPageLocation(newLocation + Config.getProperty(Config.EXTENSION_KEY));
         return SUCCESS;
     }
 

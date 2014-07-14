@@ -37,7 +37,7 @@
 	<!-- 公共 -->
 	<package name="test" extends="base" namespace="/test">
         <global-results>
-            <result name="success">${pageLocation}.jsp</result>
+            <result name="success" type="freemarker">${pageLocation}</result>
         </global-results>
         <action name="test" class="org.format.framework.test.TestAction"/>
 	</package>
