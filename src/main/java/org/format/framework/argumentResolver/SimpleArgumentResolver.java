@@ -9,7 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 public class SimpleArgumentResolver implements ArgumentResolver {
 
     public boolean supportParameter(MethodParameter parameter) {
-        return ClassUtil.isSimpleType(parameter.getType());
+        return ClassUtil.isSimpleType(parameter.getType())
+               || parameter.getType() == int[].class;
     }
 
     public Object resolveArgument(MethodParameter parameter, String paramName, HttpServletRequest request, DataBinder dataBinder) {

@@ -108,6 +108,8 @@ public class ClassUtil {
                 paramType = byte.class;
             } else if(types[i].getName().equals("boolean")) {
                 paramType = boolean.class;
+            } else if(types[i].getName().equals("int[]")) {
+                paramType = int[].class;
             } else {
                 paramType = Class.forName(types[i].getName());
             }

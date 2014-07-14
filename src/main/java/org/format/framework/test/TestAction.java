@@ -18,4 +18,8 @@ public class TestAction extends FrameworkAction {
         return forward("test");
     }
 
+    public String arr(int[] a, int[] b) {
+        return forward("test");
+    }
+
 }
