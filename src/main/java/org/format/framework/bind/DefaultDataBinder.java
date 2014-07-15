@@ -3,6 +3,8 @@ package org.format.framework.bind;
 import org.format.framework.code.MethodParameter;
 import org.format.framework.propertyeditor.PropertyEditorRegistry;
 import org.format.framework.util.ClassUtil;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 
 import java.beans.PropertyEditor;
 import java.lang.reflect.Method;
@@ -43,7 +45,9 @@ public class DefaultDataBinder extends PropertyEditorRegistry implements DataBin
 
         for(MethodParameter parameter : paramters) {
             if(parameter.getParamName().contains(".")) {
-                //多级属性暂时先不做
+                //多级属性使用Spring的BeanWrapper处理
+                BeanWrapper bw = new BeanWrapperImpl(obj);
+                bw.setPropertyValue(parameter.getParamName(), parameter.getValue());
             } else {
                 Method setMethod = ClassUtil.getSetMethods(obj.getClass(), parameter.getParamName());
                 try {

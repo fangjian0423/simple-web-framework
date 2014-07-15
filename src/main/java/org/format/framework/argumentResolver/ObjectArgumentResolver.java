@@ -7,8 +7,6 @@ import org.format.framework.code.MethodParameter;
 import org.format.framework.util.ClassUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.*;
 
 public class ObjectArgumentResolver implements ArgumentResolver {
@@ -41,13 +39,20 @@ public class ObjectArgumentResolver implements ArgumentResolver {
         try {
             while(iter.hasNext()) {
                 String key = iter.next();
-                MethodParameter[] methodParameters = ClassUtil.getParametersByMethod(parameter.getType(), ClassUtil.getSetMethods(parameter.getType(), key));
-                if(methodParameters.length > 1) {
-                    throw new IllegalArgumentException("set method's param's num is large than 1.");
-                }
-                if(methodParameters != null) {
-                    methodParameters[0].setValue(params.get(key));
-                    parameters.add(methodParameters[0]);
+                if(key.contains(".")) {
+                    MethodParameter para = new MethodParameter();
+                    para.setParamName(key);
+                    para.setValue(params.get(key)[0]);
+                    parameters.add(para);
+                } else {
+                    MethodParameter[] methodParameters = ClassUtil.getParametersByMethod(parameter.getType(), ClassUtil.getSetMethods(parameter.getType(), key));
+                    if(methodParameters.length > 1) {
+                        throw new IllegalArgumentException("set method's param's num is large than 1.");
+                    }
+                    if(methodParameters != null) {
+                        methodParameters[0].setValue(params.get(key));
+                        parameters.add(methodParameters[0]);
+                    }
                 }
             }
         } catch (Exception e) {

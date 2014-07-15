@@ -13,7 +13,7 @@ public class Employee {
 
     private Date birth;
 
-    private Dept dept;
+    private Dept dept = new Dept();
 
     public Integer getId() {
         return id;
