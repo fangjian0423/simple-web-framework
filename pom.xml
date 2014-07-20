@@ -32,19 +32,13 @@
         <!--  strus2 and spring dependency end  -->
 
 
-        <!--  hibernate dependency  -->
+        <!--  mybatis dependency  -->
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>4.3.5.Final</version>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.2.7</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-c3p0</artifactId>
-            <version>4.3.5.Final</version>
-        </dependency>
-        <!--  hibernate dependency  -->
+        <!--  mybatis dependency  -->
 
 
 
