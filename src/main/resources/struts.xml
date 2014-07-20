@@ -34,7 +34,7 @@
 	</package>
 	
 	
-	<!-- 公共 -->
+	<!-- 测试  -->
 	<package name="test" extends="base" namespace="/test">
         <action name="test" class="org.format.framework.test.TestAction"/>
 	</package>
