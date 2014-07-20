@@ -1,22 +1,15 @@
 package org.format.framework.base;
 
 import com.opensymphony.xwork2.ActionSupport;
-import javassist.*;
-import javassist.bytecode.CodeAttribute;
-import javassist.bytecode.LocalVariableAttribute;
-import javassist.bytecode.MethodInfo;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
 import org.format.framework.annotation.Action;
-import org.format.framework.test.TestAction;
-import org.format.framework.util.ClassUtil;
 import org.format.framework.util.Config;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -76,7 +69,7 @@ public abstract class ExtendsAction extends ActionSupport {
      * @param methodName
      * @return
      */
-    private String invokeMethod(String methodName) {
+    private String invokeMethod(String methodName) throws Exception {
 
         Method doMethod = getInvokeMethod(methodName);
 
@@ -88,14 +81,7 @@ public abstract class ExtendsAction extends ActionSupport {
 
         Object[] args = resolveParameters(doMethod);
 
-        try {
-            ret = doMethod.invoke(this, (Object[])args);
-            //FIXME 异常可以做点文章
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ret = doMethod.invoke(this, (Object[])args);
 
         Class<?> retType = doMethod.getReturnType();
         if(retType != null && retType == String.class) {
